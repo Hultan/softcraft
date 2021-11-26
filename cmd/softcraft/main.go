@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	"softcraft/pkg/common"
 	"softcraft/pkg/components"
-	"softcraft/pkg/types"
+	"softcraft/pkg/enemies"
+	"softcraft/pkg/player"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -19,7 +21,7 @@ func main() {
 	window, err := sdl.CreateWindow(
 		"Gaming in Go",
 		sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		types.ScreenWidth, types.ScreenHeight,
+		common.ScreenWidth, common.ScreenHeight,
 		sdl.WINDOW_OPENGL)
 	if err != nil {
 		fmt.Println("initializing window failed:", err)
@@ -34,14 +36,14 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	components.Elements = append(components.Elements, newPlayer(renderer))
+	common.Elements = append(common.Elements, player.NewPlayer(renderer))
 
 	for i := 0; i < 5; i++ {
 		for j := 0; j < 3; j++ {
-			x := (float64(i)/5)*types.ScreenWidth + (basicEnemySize / 2.0)
-			y := float64(j)*basicEnemySize + (basicEnemySize / 2.0)
+			x := (float64(i)/5)*common.ScreenWidth + (common.BasicEnemySize / 2.0)
+			y := float64(j)*common.BasicEnemySize + (common.BasicEnemySize / 2.0)
 
-			components.Elements = append(components.Elements, newBasicEnemy(renderer, x, y))
+			common.Elements = append(common.Elements, enemies.NewBasicEnemy(renderer, x, y))
 		}
 	}
 
@@ -68,7 +70,7 @@ func main() {
 			return
 		}
 
-		for _, elem := range components.Elements {
+		for _, elem := range common.Elements {
 			if elem.Active {
 				err = elem.Update()
 				if err != nil {
@@ -82,13 +84,13 @@ func main() {
 			}
 		}
 
-		if err := checkCollisions(); err != nil {
+		if err := components.CheckCollisions(); err != nil {
 			fmt.Println("checking collisions failed:", err)
 			return
 		}
 
 		renderer.Present()
 
-		types.Delta = time.Since(frameStartTime).Seconds() * types.TargetTicksPerSecond
+		common.Delta = time.Since(frameStartTime).Seconds() * common.TargetTicksPerSecond
 	}
 }

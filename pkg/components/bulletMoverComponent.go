@@ -3,17 +3,17 @@ package components
 import (
 	"math"
 
-	"softcraft/pkg/types"
+	"softcraft/pkg/common"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type bulletMover struct {
-	container *Element
+	container *common.Element
 	speed     float64
 }
 
-func newBulletMover(container *Element) *bulletMover {
+func newBulletMover(container *common.Element) *bulletMover {
 	return &bulletMover{container: container}
 }
 
@@ -24,11 +24,11 @@ func (mover *bulletMover) OnDraw(_ *sdl.Renderer) error {
 func (mover *bulletMover) OnUpdate() error {
 	c := mover.container
 
-	c.Position.X += bulletSpeed * math.Cos(c.Rotation) * types.Delta
-	c.Position.Y += bulletSpeed * math.Sin(c.Rotation) * types.Delta
+	c.Position.X += bulletSpeed * math.Cos(c.Rotation) * common.Delta
+	c.Position.Y += bulletSpeed * math.Sin(c.Rotation) * common.Delta
 
-	if c.Position.X > types.ScreenWidth || c.Position.X < 0 ||
-		c.Position.Y > types.ScreenHeight || c.Position.Y < 0 {
+	if c.Position.X > common.ScreenWidth || c.Position.X < 0 ||
+		c.Position.Y > common.ScreenHeight || c.Position.Y < 0 {
 		c.Active = false
 	}
 
@@ -37,7 +37,7 @@ func (mover *bulletMover) OnUpdate() error {
 	return nil
 }
 
-func (mover *bulletMover) OnCollision(_ *Element) error {
+func (mover *bulletMover) OnCollision(_ *common.Element) error {
 	mover.container.Active = false
 	return nil
 }

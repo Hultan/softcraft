@@ -1,19 +1,19 @@
 package components
 
 import (
-	"softcraft/pkg/types"
+	"softcraft/pkg/common"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type keyboardMover struct {
-	container *Element
+	container *common.Element
 	speed     float64
 
 	sr *spriteRenderer
 }
 
-func NewKeyboardMover(container *Element, speed float64) *keyboardMover {
+func NewKeyboardMover(container *common.Element, speed float64) *keyboardMover {
 	return &keyboardMover{
 		container: container,
 		speed:     speed,
@@ -32,18 +32,18 @@ func (mover *keyboardMover) OnUpdate() error {
 
 	if keys[sdl.SCANCODE_LEFT] == 1 {
 		if int(pos.X)-(mover.sr.width/2.0) > 0 {
-			mover.container.Position.X -= mover.speed * types.Delta
+			mover.container.Position.X -= mover.speed * common.Delta
 		}
 	} else if keys[sdl.SCANCODE_RIGHT] == 1 {
-		if int(pos.X)+(mover.sr.width/2.0) < types.ScreenWidth {
-			mover.container.Position.X += mover.speed * types.Delta
+		if int(pos.X)+(mover.sr.width/2.0) < common.ScreenWidth {
+			mover.container.Position.X += mover.speed * common.Delta
 		}
 	}
 
 	return nil
 }
 
-func (mover *keyboardMover) OnCollision(_ *Element) error {
+func (mover *keyboardMover) OnCollision(_ *common.Element) error {
 	return nil
 }
 

@@ -3,20 +3,22 @@ package components
 import (
 	"fmt"
 
+	"softcraft/pkg/common"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type spriteRenderer struct {
-	container     *Element
+	container     *common.Element
 	tex           *sdl.Texture
 	width, height int
 }
 
-func NewSpriteRenderer(container *Element, renderer *sdl.Renderer, filename string) *spriteRenderer {
+func NewSpriteRenderer(container *common.Element, renderer *sdl.Renderer, filename string) *spriteRenderer {
 	sr := &spriteRenderer{}
 	var err error
 
-	sr.tex, err = loadTextureFromBMP(filename, renderer)
+	sr.tex, err = common.LoadTextureFromBMP(filename, renderer)
 	if err != nil {
 		panic(err)
 	}
@@ -41,13 +43,13 @@ func (sr *spriteRenderer) OnUpdate() error {
 }
 
 func (sr *spriteRenderer) OnDraw(renderer *sdl.Renderer) error {
-	return drawTexture(
+	return common.DrawTexture(
 		sr.tex,
 		sr.container.Position,
 		sr.container.Rotation,
 		renderer)
 }
 
-func (sr *spriteRenderer) OnCollision(_ *Element) error {
+func (sr *spriteRenderer) OnCollision(_ *common.Element) error {
 	return nil
 }

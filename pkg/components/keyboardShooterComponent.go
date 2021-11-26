@@ -4,16 +4,18 @@ import (
 	"math"
 	"time"
 
+	"softcraft/pkg/common"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type keyboardShooter struct {
-	container *Element
+	container *common.Element
 	coolDown  time.Duration
 	lastShot  time.Time
 }
 
-func NewKeyboardShooter(container *Element, coolDown time.Duration) *keyboardShooter {
+func NewKeyboardShooter(container *common.Element, coolDown time.Duration) *keyboardShooter {
 	return &keyboardShooter{
 		container: container,
 		coolDown:  coolDown}
@@ -49,6 +51,6 @@ func (shooter *keyboardShooter) shoot(x, y float64) {
 	}
 }
 
-func (shooter *keyboardShooter) OnCollision(_ *Element) error {
+func (shooter *keyboardShooter) OnCollision(_ *common.Element) error {
 	return nil
 }

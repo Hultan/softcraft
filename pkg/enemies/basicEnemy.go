@@ -1,20 +1,18 @@
-package main
+package enemies
 
 import (
 	"fmt"
 
+	"softcraft/pkg/common"
 	"softcraft/pkg/components"
-	"softcraft/pkg/types"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const basicEnemySize = 105
+func NewBasicEnemy(renderer *sdl.Renderer, x, y float64) *common.Element {
+	basicEnemy := &common.Element{}
 
-func newBasicEnemy(renderer *sdl.Renderer, x, y float64) *components.Element {
-	basicEnemy := &components.Element{}
-
-	basicEnemy.Position = types.Vector{X: x, Y: y}
+	basicEnemy.Position = common.Vector{X: x, Y: y}
 	basicEnemy.Rotation = 180
 
 	idleSequence, err := components.NewSequence("assets/sprites/basic_enemy/idle", 5, true, renderer)
@@ -36,7 +34,7 @@ func newBasicEnemy(renderer *sdl.Renderer, x, y float64) *components.Element {
 	vtb := components.NewVulnerableToBullets(basicEnemy)
 	basicEnemy.AddComponent(vtb)
 
-	col := types.Circle{
+	col := common.Circle{
 		Center: basicEnemy.Position,
 		Radius: 38,
 	}

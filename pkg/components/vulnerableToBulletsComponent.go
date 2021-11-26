@@ -1,13 +1,17 @@
 package components
 
-import "github.com/veandco/go-sdl2/sdl"
+import (
+	"softcraft/pkg/common"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 type vulnerableToBullets struct {
-	container *Element
+	container *common.Element
 	animator  *animator
 }
 
-func NewVulnerableToBullets(container *Element) *vulnerableToBullets {
+func NewVulnerableToBullets(container *common.Element) *vulnerableToBullets {
 	return &vulnerableToBullets{
 		container: container,
 		animator:  container.GetComponent(&animator{}).(*animator)}
@@ -25,7 +29,7 @@ func (vtb *vulnerableToBullets) OnUpdate() error {
 	return nil
 }
 
-func (vtb *vulnerableToBullets) OnCollision(other *Element) error {
+func (vtb *vulnerableToBullets) OnCollision(other *common.Element) error {
 	if other.Tag == "bullet" {
 		vtb.animator.setSequence("destroy")
 	}

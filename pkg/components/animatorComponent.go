@@ -6,11 +6,13 @@ import (
 	"path"
 	"time"
 
+	"softcraft/pkg/common"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type animator struct {
-	container       *Element
+	container       *common.Element
 	sequences       map[string]*Sequence
 	current         string
 	lastFrameChange time.Time
@@ -18,7 +20,7 @@ type animator struct {
 }
 
 func NewAnimator(
-	container *Element,
+	container *common.Element,
 	sequences map[string]*Sequence,
 	defaultSequence string) *animator {
 	var an animator
@@ -47,14 +49,14 @@ func (an *animator) OnUpdate() error {
 func (an *animator) OnDraw(renderer *sdl.Renderer) error {
 	tex := an.sequences[an.current].texture()
 
-	return drawTexture(
+	return common.DrawTexture(
 		tex,
 		an.container.Position,
 		an.container.Rotation,
 		renderer)
 }
 
-func (an *animator) OnCollision(_ *Element) error {
+func (an *animator) OnCollision(_ *common.Element) error {
 	return nil
 }
 
@@ -86,7 +88,7 @@ func NewSequence(
 	for _, file := range files {
 		filename := path.Join(filepath, file.Name())
 
-		tex, err := loadTextureFromBMP(filename, renderer)
+		tex, err := common.LoadTextureFromBMP(filename, renderer)
 		if err != nil {
 			return nil, fmt.Errorf("loading sequence frame failed: %v", err)
 		}

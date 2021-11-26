@@ -1,30 +1,11 @@
-package components
+package common
 
 import (
 	"fmt"
 	"reflect"
 
-	"softcraft/pkg/types"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
-
-type Component interface {
-	OnUpdate() error
-	OnDraw(renderer *sdl.Renderer) error
-	OnCollision(other *Element) error
-}
-
-type Element struct {
-	Position types.Vector
-	Rotation float64
-	Active     bool
-	Tag        string
-	Collisions []types.Circle
-	Components []Component
-}
-
-var Elements []*Element
 
 func (elem *Element) Draw(renderer *sdl.Renderer) error {
 	for _, comp := range elem.Components {

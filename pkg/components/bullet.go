@@ -1,7 +1,7 @@
 package components
 
 import (
-	"softcraft/pkg/types"
+	"softcraft/pkg/common"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -11,8 +11,8 @@ const (
 	bulletSpeed = 10
 )
 
-func newBullet(renderer *sdl.Renderer) *Element {
-	bullet := &Element{}
+func newBullet(renderer *sdl.Renderer) *common.Element {
+	bullet := &common.Element{}
 
 	sr := NewSpriteRenderer(bullet, renderer, "assets/sprites/player_bullet.bmp")
 	bullet.AddComponent(sr)
@@ -20,7 +20,7 @@ func newBullet(renderer *sdl.Renderer) *Element {
 	mover := newBulletMover(bullet)
 	bullet.AddComponent(mover)
 
-	col := types.Circle{
+	col := common.Circle{
 		Center: bullet.Position,
 		Radius: 8,
 	}
@@ -31,17 +31,17 @@ func newBullet(renderer *sdl.Renderer) *Element {
 	return bullet
 }
 
-var bulletPool []*Element
+var bulletPool []*common.Element
 
 func InitBulletPool(renderer *sdl.Renderer) {
 	for i := 0; i < 30; i++ {
 		bul := newBullet(renderer)
 		bulletPool = append(bulletPool, bul)
-		Elements = append(Elements, bul)
+		common.Elements = append(common.Elements, bul)
 	}
 }
 
-func bulletFromPool() (*Element, bool) {
+func bulletFromPool() (*common.Element, bool) {
 	for _, bul := range bulletPool {
 		if !bul.Active {
 			return bul, true

@@ -1,16 +1,14 @@
-package components
+package common
 
 import (
 	"fmt"
 
-	"softcraft/pkg/types"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-func drawTexture(
+func DrawTexture(
 	tex *sdl.Texture,
-	position types.Vector,
+	position Vector,
 	rotation float64,
 	renderer *sdl.Renderer) error {
 
@@ -32,7 +30,7 @@ func drawTexture(
 		sdl.FLIP_NONE)
 }
 
-func loadTextureFromBMP(filename string, renderer *sdl.Renderer) (*sdl.Texture, error) {
+func LoadTextureFromBMP(filename string, renderer *sdl.Renderer) (*sdl.Texture, error) {
 	img, err := sdl.LoadBMP(filename)
 	if err != nil {
 		return nil, fmt.Errorf("loading %v failed: %v", filename, err)
