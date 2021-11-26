@@ -50,3 +50,8 @@ const (
 
 	PlayerShotCoolDown = time.Millisecond * 250
 )
+
+const (
+	BulletSize  = 32
+	BulletSpeed = 10
+)

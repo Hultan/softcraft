@@ -43,7 +43,7 @@ func (shooter *keyboardShooter) OnUpdate() error {
 }
 
 func (shooter *keyboardShooter) shoot(x, y float64) {
-	if bul, ok := bulletFromPool(); ok {
+	if bul, ok := getBulletFromPool(); ok {
 		bul.Active = true
 		bul.Position.X = x
 		bul.Position.Y = y

@@ -84,7 +84,7 @@ func main() {
 			}
 		}
 
-		if err := components.CheckCollisions(); err != nil {
+		if err := common.CheckCollisions(); err != nil {
 			fmt.Println("checking collisions failed:", err)
 			return
 		}

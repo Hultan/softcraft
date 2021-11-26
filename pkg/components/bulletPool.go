@@ -6,11 +6,6 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const (
-	bulletSize  = 32
-	bulletSpeed = 10
-)
-
 func newBullet(renderer *sdl.Renderer) *common.Element {
 	bullet := &common.Element{}
 
@@ -41,7 +36,7 @@ func InitBulletPool(renderer *sdl.Renderer) {
 	}
 }
 
-func bulletFromPool() (*common.Element, bool) {
+func getBulletFromPool() (*common.Element, bool) {
 	for _, bul := range bulletPool {
 		if !bul.Active {
 			return bul, true
