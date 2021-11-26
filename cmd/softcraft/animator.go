@@ -32,12 +32,12 @@ func newAnimator(
 }
 
 func (an *animator) onUpdate() error {
-	sequence := an.sequences[an.current]
+	s := an.sequences[an.current]
 
-	frameInterval := float64(time.Second) / sequence.sampleRate
+	frameInterval := float64(time.Second) / s.sampleRate
 
 	if time.Since(an.lastFrameChange) >= time.Duration(frameInterval) {
-		an.finished = sequence.nextFrame()
+		an.finished = s.nextFrame()
 		an.lastFrameChange = time.Now()
 	}
 
@@ -54,7 +54,7 @@ func (an *animator) onDraw(renderer *sdl.Renderer) error {
 		renderer)
 }
 
-func (an *animator) onCollision(other *element) error {
+func (an *animator) onCollision(_ *element) error {
 	return nil
 }
 
@@ -80,7 +80,7 @@ func newSequence(
 
 	files, err := ioutil.ReadDir(filepath)
 	if err != nil {
-		return nil, fmt.Errorf("reading directory %v: %v", filepath, err)
+		return nil, fmt.Errorf("reading directory %v failed: %v", filepath, err)
 	}
 
 	for _, file := range files {
@@ -88,7 +88,7 @@ func newSequence(
 
 		tex, err := loadTextureFromBMP(filename, renderer)
 		if err != nil {
-			return nil, fmt.Errorf("loading sequence frame: %v", err)
+			return nil, fmt.Errorf("loading sequence frame failed: %v", err)
 		}
 		seq.textures = append(seq.textures, tex)
 	}

@@ -13,7 +13,7 @@ func newVulnerableToBullets(container *element) *vulnerableToBullets {
 		animator:  container.getComponent(&animator{}).(*animator)}
 }
 
-func (vtb *vulnerableToBullets) onDraw(renderer *sdl.Renderer) error {
+func (vtb *vulnerableToBullets) onDraw(_ *sdl.Renderer) error {
 	return nil
 }
 

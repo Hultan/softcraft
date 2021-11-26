@@ -14,7 +14,7 @@ func drawTexture(
 
 	_, _, width, height, err := tex.Query()
 	if err != nil {
-		return fmt.Errorf("querying texture: %v", err)
+		return fmt.Errorf("querying texture failed: %v", err)
 	}
 
 	// Convert coordinates to the top left of the sprite
@@ -33,12 +33,12 @@ func drawTexture(
 func loadTextureFromBMP(filename string, renderer *sdl.Renderer) (*sdl.Texture, error) {
 	img, err := sdl.LoadBMP(filename)
 	if err != nil {
-		return nil, fmt.Errorf("loading %v: %v", filename, err)
+		return nil, fmt.Errorf("loading %v failed: %v", filename, err)
 	}
 	defer img.Free()
 	tex, err := renderer.CreateTextureFromSurface(img)
 	if err != nil {
-		return nil, fmt.Errorf("creating texture from %v: %v", filename, err)
+		return nil, fmt.Errorf("creating texture from %v failed: %v", filename, err)
 	}
 
 	return tex, nil

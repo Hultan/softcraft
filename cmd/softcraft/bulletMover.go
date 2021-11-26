@@ -15,7 +15,7 @@ func newBulletMover(container *element) *bulletMover {
 	return &bulletMover{container: container}
 }
 
-func (mover *bulletMover) onDraw(renderer *sdl.Renderer) error {
+func (mover *bulletMover) onDraw(_ *sdl.Renderer) error {
 	return nil
 }
 
@@ -35,7 +35,7 @@ func (mover *bulletMover) onUpdate() error {
 	return nil
 }
 
-func (mover *bulletMover) onCollision(other *element) error {
+func (mover *bulletMover) onCollision(_ *element) error {
 	mover.container.active = false
 	return nil
 }

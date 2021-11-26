@@ -61,7 +61,7 @@ func (elem *element) addComponent(new component) {
 	for _, existing := range elem.components {
 		if reflect.TypeOf(new) == reflect.TypeOf(existing) {
 			panic(fmt.Sprintf(
-				"attempt to add new component with existing type %v",
+				"attempt to add new component with existing type %v failed",
 				reflect.TypeOf(new)))
 		}
 	}
@@ -76,5 +76,5 @@ func (elem *element) getComponent(withType component) component {
 		}
 	}
 
-	panic(fmt.Sprintf("no component with type %v", reflect.TypeOf(withType)))
+	panic(fmt.Sprintf("no component with type %v failed", reflect.TypeOf(withType)))
 }

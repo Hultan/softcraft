@@ -23,7 +23,7 @@ func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename stri
 
 	_, _, width, height, err := sr.tex.Query()
 	if err != nil {
-		panic(fmt.Errorf("querying texture: %v", err))
+		panic(fmt.Errorf("querying texture failed: %v", err))
 	}
 	sr.width = int(width)
 	sr.height = int(height)
@@ -48,6 +48,6 @@ func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
 		renderer)
 }
 
-func (sr *spriteRenderer) onCollision(other *element) error {
+func (sr *spriteRenderer) onCollision(_ *element) error {
 	return nil
 }

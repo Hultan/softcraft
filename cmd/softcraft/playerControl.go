@@ -22,7 +22,7 @@ func newKeyboardMover(container *element, speed float64) *keyboardMover {
 	}
 }
 
-func (mover *keyboardMover) onDraw(renderer *sdl.Renderer) error {
+func (mover *keyboardMover) onDraw(_ *sdl.Renderer) error {
 	return nil
 }
 
@@ -44,23 +44,23 @@ func (mover *keyboardMover) onUpdate() error {
 	return nil
 }
 
-func (mover *keyboardMover) onCollision(other *element) error {
+func (mover *keyboardMover) onCollision(_ *element) error {
 	return nil
 }
 
 type keyboardShooter struct {
 	container *element
-	cooldown  time.Duration
+	coolDown  time.Duration
 	lastShot  time.Time
 }
 
-func newKeyboardShooter(container *element, cooldown time.Duration) *keyboardShooter {
+func newKeyboardShooter(container *element, coolDown time.Duration) *keyboardShooter {
 	return &keyboardShooter{
 		container: container,
-		cooldown:  cooldown}
+		coolDown:  coolDown}
 }
 
-func (shooter *keyboardShooter) onDraw(renderer *sdl.Renderer) error {
+func (shooter *keyboardShooter) onDraw(_ *sdl.Renderer) error {
 	return nil
 }
 
@@ -70,7 +70,7 @@ func (shooter *keyboardShooter) onUpdate() error {
 	pos := shooter.container.position
 
 	if keys[sdl.SCANCODE_SPACE] == 1 {
-		if time.Since(shooter.lastShot) >= shooter.cooldown {
+		if time.Since(shooter.lastShot) >= shooter.coolDown {
 			shooter.shoot(pos.x+25, pos.y-20)
 			shooter.shoot(pos.x-25, pos.y-20)
 
@@ -90,6 +90,6 @@ func (shooter *keyboardShooter) shoot(x, y float64) {
 	}
 }
 
-func (shooter *keyboardShooter) onCollision(other *element) error {
+func (shooter *keyboardShooter) onCollision(_ *element) error {
 	return nil
 }

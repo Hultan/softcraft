@@ -16,11 +16,11 @@ func newBasicEnemy(renderer *sdl.Renderer, x, y float64) *element {
 
 	idleSequence, err := newSequence("assets/sprites/basic_enemy/idle", 5, true, renderer)
 	if err != nil {
-		panic(fmt.Errorf("creating idle sequence: %v", err))
+		panic(fmt.Errorf("creating idle sequence failed: %v", err))
 	}
 	destroySequence, err := newSequence("assets/sprites/basic_enemy/destroy", 15, false, renderer)
 	if err != nil {
-		panic(fmt.Errorf("creating destroy sequence: %v", err))
+		panic(fmt.Errorf("creating destroy sequence failed: %v", err))
 	}
 	sequences := map[string]*sequence{
 		"idle":    idleSequence,

@@ -9,7 +9,7 @@ import (
 const (
 	playerSize = 105
 
-	playerShotCooldown = time.Millisecond * 250
+	playerShotCoolDown = time.Millisecond * 250
 )
 
 func newPlayer(renderer *sdl.Renderer) *element {
@@ -25,7 +25,7 @@ func newPlayer(renderer *sdl.Renderer) *element {
 	mover := newKeyboardMover(player, 5)
 	player.addComponent(mover)
 
-	shooter := newKeyboardShooter(player, playerShotCooldown)
+	shooter := newKeyboardShooter(player, playerShotCoolDown)
 	player.addComponent(shooter)
 
 	player.active = true

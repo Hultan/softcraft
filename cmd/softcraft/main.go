@@ -23,24 +23,24 @@ var delta float64
 
 func main() {
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
-		fmt.Println("initializing SDL:", err)
+		fmt.Println("initializing SDL failed:", err)
 		return
 	}
 
 	window, err := sdl.CreateWindow(
-		"Gaming in Go Episode 2",
+		"Gaming in Go",
 		sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		screenWidth, screenHeight,
 		sdl.WINDOW_OPENGL)
 	if err != nil {
-		fmt.Println("initializing window:", err)
+		fmt.Println("initializing window failed:", err)
 		return
 	}
 	defer window.Destroy()
 
 	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if err != nil {
-		fmt.Println("initializing renderer:", err)
+		fmt.Println("initializing renderer failed:", err)
 		return
 	}
 	defer renderer.Destroy()
@@ -68,25 +68,33 @@ func main() {
 			}
 		}
 
-		renderer.SetDrawColor(255, 255, 255, 255)
-		renderer.Clear()
+		err = renderer.SetDrawColor(255, 255, 255, 255)
+		if err != nil {
+			fmt.Println("setting draw color failed:", err)
+			return
+		}
+		err = renderer.Clear()
+		if err != nil {
+			fmt.Println("clearing screen failed:", err)
+			return
+		}
 
 		for _, elem := range elements {
 			if elem.active {
 				err = elem.update()
 				if err != nil {
-					fmt.Println("updating element:", err)
+					fmt.Println("updating element failed:", err)
 					return
 				}
 				err = elem.draw(renderer)
 				if err != nil {
-					fmt.Println("drawing element:", err)
+					fmt.Println("drawing element failed:", err)
 				}
 			}
 		}
 
 		if err := checkCollisions(); err != nil {
-			fmt.Println("checking collisions:", err)
+			fmt.Println("checking collisions failed:", err)
 			return
 		}
 
