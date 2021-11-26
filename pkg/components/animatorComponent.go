@@ -1,4 +1,4 @@
-package main
+package components
 
 import (
 	"fmt"
@@ -10,16 +10,16 @@ import (
 )
 
 type animator struct {
-	container       *element
-	sequences       map[string]*sequence
+	container       *Element
+	sequences       map[string]*Sequence
 	current         string
 	lastFrameChange time.Time
 	finished        bool
 }
 
-func newAnimator(
-	container *element,
-	sequences map[string]*sequence,
+func NewAnimator(
+	container *Element,
+	sequences map[string]*Sequence,
 	defaultSequence string) *animator {
 	var an animator
 
@@ -31,7 +31,7 @@ func newAnimator(
 	return &an
 }
 
-func (an *animator) onUpdate() error {
+func (an *animator) OnUpdate() error {
 	s := an.sequences[an.current]
 
 	frameInterval := float64(time.Second) / s.sampleRate
@@ -44,17 +44,17 @@ func (an *animator) onUpdate() error {
 	return nil
 }
 
-func (an *animator) onDraw(renderer *sdl.Renderer) error {
+func (an *animator) OnDraw(renderer *sdl.Renderer) error {
 	tex := an.sequences[an.current].texture()
 
 	return drawTexture(
 		tex,
-		an.container.position,
-		an.container.rotation,
+		an.container.Position,
+		an.container.Rotation,
 		renderer)
 }
 
-func (an *animator) onCollision(_ *element) error {
+func (an *animator) OnCollision(_ *Element) error {
 	return nil
 }
 
@@ -63,20 +63,20 @@ func (an *animator) setSequence(name string) {
 	an.lastFrameChange = time.Now()
 }
 
-type sequence struct {
+type Sequence struct {
 	textures   []*sdl.Texture
 	frame      int
 	sampleRate float64
 	loop       bool
 }
 
-func newSequence(
+func NewSequence(
 	filepath string,
 	sampleRate float64,
 	loop bool,
-	renderer *sdl.Renderer) (*sequence, error) {
+	renderer *sdl.Renderer) (*Sequence, error) {
 
-	var seq sequence
+	var seq Sequence
 
 	files, err := ioutil.ReadDir(filepath)
 	if err != nil {
@@ -99,11 +99,11 @@ func newSequence(
 	return &seq, nil
 }
 
-func (seq *sequence) texture() *sdl.Texture {
+func (seq *Sequence) texture() *sdl.Texture {
 	return seq.textures[seq.frame]
 }
 
-func (seq *sequence) nextFrame() bool {
+func (seq *Sequence) nextFrame() bool {
 	if seq.frame == len(seq.textures)-1 {
 		if seq.loop {
 			seq.frame = 0

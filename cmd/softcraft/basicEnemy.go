@@ -3,43 +3,46 @@ package main
 import (
 	"fmt"
 
+	"softcraft/pkg/components"
+	"softcraft/pkg/types"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 const basicEnemySize = 105
 
-func newBasicEnemy(renderer *sdl.Renderer, x, y float64) *element {
-	basicEnemy := &element{}
+func newBasicEnemy(renderer *sdl.Renderer, x, y float64) *components.Element {
+	basicEnemy := &components.Element{}
 
-	basicEnemy.position = vector{x: x, y: y}
-	basicEnemy.rotation = 180
+	basicEnemy.Position = types.Vector{X: x, Y: y}
+	basicEnemy.Rotation = 180
 
-	idleSequence, err := newSequence("assets/sprites/basic_enemy/idle", 5, true, renderer)
+	idleSequence, err := components.NewSequence("assets/sprites/basic_enemy/idle", 5, true, renderer)
 	if err != nil {
 		panic(fmt.Errorf("creating idle sequence failed: %v", err))
 	}
-	destroySequence, err := newSequence("assets/sprites/basic_enemy/destroy", 15, false, renderer)
+	destroySequence, err := components.NewSequence("assets/sprites/basic_enemy/destroy", 15, false, renderer)
 	if err != nil {
 		panic(fmt.Errorf("creating destroy sequence failed: %v", err))
 	}
-	sequences := map[string]*sequence{
+	sequences := map[string]*components.Sequence{
 		"idle":    idleSequence,
 		"destroy": destroySequence,
 	}
 
-	animator := newAnimator(basicEnemy, sequences, "idle")
-	basicEnemy.addComponent(animator)
+	animator := components.NewAnimator(basicEnemy, sequences, "idle")
+	basicEnemy.AddComponent(animator)
 
-	vtb := newVulnerableToBullets(basicEnemy)
-	basicEnemy.addComponent(vtb)
+	vtb := components.NewVulnerableToBullets(basicEnemy)
+	basicEnemy.AddComponent(vtb)
 
-	col := circle{
-		center: basicEnemy.position,
-		radius: 38,
+	col := types.Circle{
+		Center: basicEnemy.Position,
+		Radius: 38,
 	}
-	basicEnemy.collisions = append(basicEnemy.collisions, col)
+	basicEnemy.Collisions = append(basicEnemy.Collisions, col)
 
-	basicEnemy.active = true
+	basicEnemy.Active = true
 
 	return basicEnemy
 }

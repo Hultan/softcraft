@@ -1,4 +1,4 @@
-package main
+package components
 
 import (
 	"fmt"
@@ -7,12 +7,12 @@ import (
 )
 
 type spriteRenderer struct {
-	container     *element
+	container     *Element
 	tex           *sdl.Texture
 	width, height int
 }
 
-func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename string) *spriteRenderer {
+func NewSpriteRenderer(container *Element, renderer *sdl.Renderer, filename string) *spriteRenderer {
 	sr := &spriteRenderer{}
 	var err error
 
@@ -36,18 +36,18 @@ func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename stri
 func (sr *spriteRenderer) start() {
 }
 
-func (sr *spriteRenderer) onUpdate() error {
+func (sr *spriteRenderer) OnUpdate() error {
 	return nil
 }
 
-func (sr *spriteRenderer) onDraw(renderer *sdl.Renderer) error {
+func (sr *spriteRenderer) OnDraw(renderer *sdl.Renderer) error {
 	return drawTexture(
 		sr.tex,
-		sr.container.position,
-		sr.container.rotation,
+		sr.container.Position,
+		sr.container.Rotation,
 		renderer)
 }
 
-func (sr *spriteRenderer) onCollision(_ *element) error {
+func (sr *spriteRenderer) OnCollision(_ *Element) error {
 	return nil
 }

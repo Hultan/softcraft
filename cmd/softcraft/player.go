@@ -3,6 +3,9 @@ package main
 import (
 	"time"
 
+	"softcraft/pkg/components"
+	"softcraft/pkg/types"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -12,23 +15,23 @@ const (
 	playerShotCoolDown = time.Millisecond * 250
 )
 
-func newPlayer(renderer *sdl.Renderer) *element {
-	player := &element{}
+func newPlayer(renderer *sdl.Renderer) *components.Element {
+	player := &components.Element{}
 
-	player.position = vector{
-		x: screenWidth / 2.0,
-		y: screenHeight - playerSize/2.0}
+	player.Position = types.Vector{
+		X: types.ScreenWidth / 2.0,
+		Y: types.ScreenHeight - playerSize/2.0}
 
-	sr := newSpriteRenderer(player, renderer, "assets/sprites/player.bmp")
-	player.addComponent(sr)
+	sr := components.NewSpriteRenderer(player, renderer, "assets/sprites/player.bmp")
+	player.AddComponent(sr)
 
-	mover := newKeyboardMover(player, 5)
-	player.addComponent(mover)
+	mover := components.NewKeyboardMover(player, 5)
+	player.AddComponent(mover)
 
-	shooter := newKeyboardShooter(player, playerShotCoolDown)
-	player.addComponent(shooter)
+	shooter := components.NewKeyboardShooter(player, playerShotCoolDown)
+	player.AddComponent(shooter)
 
-	player.active = true
+	player.Active = true
 
 	return player
 }

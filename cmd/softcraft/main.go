@@ -4,22 +4,11 @@ import (
 	"fmt"
 	"time"
 
+	"softcraft/pkg/components"
+	"softcraft/pkg/types"
+
 	"github.com/veandco/go-sdl2/sdl"
 )
-
-const (
-	screenWidth  = 600
-	screenHeight = 800
-
-	targetTicksPerSecond = 60
-)
-
-type vector struct {
-	x float64
-	y float64
-}
-
-var delta float64
 
 func main() {
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
@@ -30,7 +19,7 @@ func main() {
 	window, err := sdl.CreateWindow(
 		"Gaming in Go",
 		sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		screenWidth, screenHeight,
+		types.ScreenWidth, types.ScreenHeight,
 		sdl.WINDOW_OPENGL)
 	if err != nil {
 		fmt.Println("initializing window failed:", err)
@@ -45,18 +34,18 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	elements = append(elements, newPlayer(renderer))
+	components.Elements = append(components.Elements, newPlayer(renderer))
 
 	for i := 0; i < 5; i++ {
 		for j := 0; j < 3; j++ {
-			x := (float64(i)/5)*screenWidth + (basicEnemySize / 2.0)
+			x := (float64(i)/5)*types.ScreenWidth + (basicEnemySize / 2.0)
 			y := float64(j)*basicEnemySize + (basicEnemySize / 2.0)
 
-			elements = append(elements, newBasicEnemy(renderer, x, y))
+			components.Elements = append(components.Elements, newBasicEnemy(renderer, x, y))
 		}
 	}
 
-	initBulletPool(renderer)
+	components.InitBulletPool(renderer)
 
 	for {
 		frameStartTime := time.Now()
@@ -79,14 +68,14 @@ func main() {
 			return
 		}
 
-		for _, elem := range elements {
-			if elem.active {
-				err = elem.update()
+		for _, elem := range components.Elements {
+			if elem.Active {
+				err = elem.Update()
 				if err != nil {
 					fmt.Println("updating element failed:", err)
 					return
 				}
-				err = elem.draw(renderer)
+				err = elem.Draw(renderer)
 				if err != nil {
 					fmt.Println("drawing element failed:", err)
 				}
@@ -100,6 +89,6 @@ func main() {
 
 		renderer.Present()
 
-		delta = time.Since(frameStartTime).Seconds() * targetTicksPerSecond
+		types.Delta = time.Since(frameStartTime).Seconds() * types.TargetTicksPerSecond
 	}
 }
