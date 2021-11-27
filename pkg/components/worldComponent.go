@@ -13,27 +13,35 @@ type World struct {
 	common.Element
 
 	renderer *sdl.Renderer
+	window   *sdl.Window
 	data     [1000][1000]int
 	tex      map[int]*sdl.Texture
 }
 
-func NewWorld(renderer *sdl.Renderer) *World {
+func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
 	w := &World{}
 
 	// Position the player in the center of the world.
 	w.Element.Position = common.Vector{X: 500 * 32, Y: 500 * 32}
 	w.Element.Tag = "world"
 	w.renderer = renderer
+	w.window = window
 	w.tex = make(map[int]*sdl.Texture, 4)
 
 	w.generateRandomWorld()
 
 	w.loadAssets(renderer)
 
-	mover := NewKeyboardMover(&w.Element, 5)
+	mover := NewKeyboardMover(&w.Element, 5, w)
 	w.AddComponent(mover)
 
-	return w
+	loc, err := NewLocationComponent(w)
+	if err != nil {
+		return nil, err
+	}
+	w.AddComponent(loc)
+
+	return w, nil
 }
 
 func (w *World) OnUpdate() error {
@@ -76,6 +84,14 @@ drawing:
 			if err != nil {
 				break drawing
 			}
+		}
+	}
+
+	// Draw components
+	for _, comp := range w.Components {
+		err = comp.OnDraw(renderer)
+		if err != nil {
+			return err
 		}
 	}
 

@@ -48,9 +48,6 @@ const (
 	TargetTicksPerSecond = 60
 )
 
-const BasicEnemySize = 105
-
-
 const (
 	PlayerSize = 105
 

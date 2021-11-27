@@ -12,8 +12,8 @@ type keyboardQuitter struct {
 	container *common.Element
 }
 
-func NewKeyboardQuitter(container *common.Element) *keyboardMover {
-	return &keyboardMover{
+func NewKeyboardQuitter(container *common.Element) *keyboardQuitter {
+	return &keyboardQuitter{
 		container: container,
 	}
 }
@@ -25,7 +25,7 @@ func (mover *keyboardQuitter) OnDraw(_ *sdl.Renderer) error {
 func (mover *keyboardQuitter) OnUpdate() error {
 	keys := sdl.GetKeyboardState()
 
-	if keys[sdl.SCANCODE_ESCAPE] == 1 {
+	if keys[sdl.SCANCODE_ESCAPE] == 1 || keys[sdl.SCANCODE_Q] == 1 {
 		os.Exit(0)
 	}
 

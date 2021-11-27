@@ -36,9 +36,12 @@ func main() {
 	defer renderer.Destroy()
 
 	common.Elements = append(common.Elements, player.NewPlayer(renderer))
-	world := components.NewWorld(renderer)
+	world, err := components.NewWorld(renderer, window)
+	if err != nil {
+		panic(err)
+	}
 
-	components.InitBulletPool(renderer)
+	// components.InitBulletPool(renderer)
 
 	// GAME LOOP
 	for {
