@@ -1,6 +1,7 @@
 package components
 
 import (
+	"softcraft/pkg/assets"
 	"softcraft/pkg/common"
 	"softcraft/pkg/world"
 
@@ -24,12 +25,12 @@ func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
 	w.Element.Tag = "world"
 	w.renderer = renderer
 	w.window = window
-	w.tex = make(map[world.Asset]*sdl.Texture, 4)
 
 	gen := world.Generator{}
 	w.data = gen.GenerateRandomWorld()
 
-	w.loadAssets(renderer)
+	a := assets.AssetLoader{}
+	w.tex = a.LoadWorldAssets(renderer)
 
 	mover := NewKeyboardMover(&w.Element, 5, w)
 	w.AddComponent(mover)
@@ -101,24 +102,3 @@ func (w *World) OnCollision(_ *common.Element) error {
 	return nil
 }
 
-//
-// Helper functions
-//
-
-func (w *World) loadAssets(renderer *sdl.Renderer) {
-	// Load assets
-	w.tex[world.AssetGrass] = w.loadAsset("assets/world/grass.bmp", renderer)
-	w.tex[world.AssetGround] = w.loadAsset("assets/world/ground.bmp", renderer)
-	w.tex[world.AssetPath] = w.loadAsset("assets/world/path.bmp", renderer)
-	w.tex[world.AssetSand] = w.loadAsset("assets/world/sand.bmp", renderer)
-	w.tex[world.AssetWater] = w.loadAsset("assets/world/water.bmp", renderer)
-}
-
-func (w *World) loadAsset(fileName string, renderer *sdl.Renderer) *sdl.Texture {
-	t, err := common.LoadTextureFromBMP(fileName, renderer)
-	if err != nil {
-		// No point in continue if we can't load the assets
-		panic(err)
-	}
-	return t
-}
