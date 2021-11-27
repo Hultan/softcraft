@@ -43,27 +43,37 @@ func (lc *locationComponent) OnDraw(renderer *sdl.Renderer) error {
 	var err error
 	var surface *sdl.Surface
 
-	x:= int64(lc.world.Position.X/common.BlockWidth)
-	y:= int64(lc.world.Position.Y/common.BlockHeight)
-	// Create a white text with the font
-	message := fmt.Sprintf("Pos : %d,%d", x,y)
+	x, y := lc.getPosition()
+
+	// Draw a black position information
+	message := fmt.Sprintf("Pos : %d,%d", x, y)
 	if surface, err = lc.font.RenderUTF8Solid(message, sdl.Color{R: 0, G: 0, B: 0, A: 255}); err != nil {
 		return err
 	}
 	defer surface.Free()
 
+	// Create a texture for the text position message
 	texture, err := renderer.CreateTextureFromSurface(surface)
 	if err != nil {
 		panic(err)
 	}
-	defer texture.Destroy()
+	defer func(texture *sdl.Texture) {
+		err = texture.Destroy()
+	}(texture)
 
-	renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: surface.W+10, H: surface.H})
-	renderer.Copy(texture,
+	// Draw a white box, where the position message should be shown
+	err = renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: surface.W + 10, H: surface.H})
+	if err != nil {
+		return err
+	}
+
+	// Copy the position texture to the screen
+	err = renderer.Copy(texture,
 		&sdl.Rect{X: 0, Y: 0, W: surface.W, H: surface.H},
 		&sdl.Rect{X: 5, Y: 0, W: surface.W, H: surface.H})
-
-	renderer.Present()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -74,4 +84,10 @@ func (lc *locationComponent) OnUpdate() error {
 
 func (lc *locationComponent) OnCollision(_ *common.Element) error {
 	return nil
+}
+
+func (lc *locationComponent) getPosition() (int64, int64) {
+	x := int64(lc.world.Position.X / common.BlockWidth)
+	y := int64(lc.world.Position.Y / common.BlockHeight)
+	return x, y
 }
