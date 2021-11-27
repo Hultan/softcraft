@@ -11,8 +11,6 @@ import (
 
 type locationComponent struct {
 	world   *World
-	window  *sdl.Window
-	surface *sdl.Surface
 	font    *ttf.Font
 }
 
@@ -26,11 +24,6 @@ func NewLocationComponent(world *World) (*locationComponent, error) {
 		return nil, err
 	}
 
-	lc.window = world.window
-
-	if lc.surface, err = world.window.GetSurface(); err != nil{
-		return nil, err
-	}
 	// Load the font for our text
 	if lc.font, err = ttf.OpenFont("assets/nerdfont.ttf", 20); err != nil {
 		return nil, err
@@ -40,14 +33,13 @@ func NewLocationComponent(world *World) (*locationComponent, error) {
 }
 
 func (lc *locationComponent) OnDraw(renderer *sdl.Renderer) error {
-	var err error
-	var surface *sdl.Surface
-
+	// Get player position
 	x, y := lc.getPosition()
 
 	// Draw a black position information
 	message := fmt.Sprintf("Pos : %d,%d", x, y)
-	if surface, err = lc.font.RenderUTF8Solid(message, sdl.Color{R: 0, G: 0, B: 0, A: 255}); err != nil {
+	surface, err := lc.font.RenderUTF8Solid(message, sdl.Color{R: 0, G: 0, B: 0, A: 255})
+	if err != nil {
 		return err
 	}
 	defer surface.Free()

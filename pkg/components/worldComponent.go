@@ -1,11 +1,9 @@
 package components
 
 import (
-	"math/rand"
-
 	"softcraft/pkg/common"
+	"softcraft/pkg/world"
 
-	"github.com/aquilax/go-perlin"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -14,8 +12,8 @@ type World struct {
 
 	renderer *sdl.Renderer
 	window   *sdl.Window
-	data     [1000][1000]int
-	tex      map[int]*sdl.Texture
+	data     [1000][1000]world.Asset
+	tex      map[world.Asset]*sdl.Texture
 }
 
 func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
@@ -26,9 +24,10 @@ func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
 	w.Element.Tag = "world"
 	w.renderer = renderer
 	w.window = window
-	w.tex = make(map[int]*sdl.Texture, 4)
+	w.tex = make(map[world.Asset]*sdl.Texture, 4)
 
-	w.generateRandomWorld()
+	gen := world.Generator{}
+	w.data = gen.GenerateRandomWorld()
 
 	w.loadAssets(renderer)
 
@@ -106,44 +105,13 @@ func (w *World) OnCollision(_ *common.Element) error {
 // Helper functions
 //
 
-// generateRandomWorld generates a random world
-func (w *World) generateRandomWorld() {
-	const (
-		alpha       = 2.
-		beta        = 2.
-		n           = 3
-		seed  int64 = 100
-	)
-	p := perlin.NewPerlinRandSource(alpha, beta, n, rand.NewSource(seed))
-	var r float64
-	var data int
-	for i := 0; i < 1000; i++ {
-		for j := 0; j < 1000; j++ {
-			r = p.Noise2D(float64(i)/10, float64(j)/10)
-			switch {
-			case r <= 0.0:
-				data = 0
-			case r <= 0.25:
-				data = 1
-			case r <= 0.5:
-				data = 2
-			case r <= 0.6:
-				data = 3
-			case r <= 1:
-				data = 4
-			}
-			w.data[i][j] = data
-		}
-	}
-}
-
 func (w *World) loadAssets(renderer *sdl.Renderer) {
 	// Load assets
-	w.tex[0] = w.loadAsset("assets/world/grass.bmp", renderer)
-	w.tex[1] = w.loadAsset("assets/world/ground.bmp", renderer)
-	w.tex[2] = w.loadAsset("assets/world/path.bmp", renderer)
-	w.tex[3] = w.loadAsset("assets/world/sand.bmp", renderer)
-	w.tex[4] = w.loadAsset("assets/world/water.bmp", renderer)
+	w.tex[world.AssetGrass] = w.loadAsset("assets/world/grass.bmp", renderer)
+	w.tex[world.AssetGround] = w.loadAsset("assets/world/ground.bmp", renderer)
+	w.tex[world.AssetPath] = w.loadAsset("assets/world/path.bmp", renderer)
+	w.tex[world.AssetSand] = w.loadAsset("assets/world/sand.bmp", renderer)
+	w.tex[world.AssetWater] = w.loadAsset("assets/world/water.bmp", renderer)
 }
 
 func (w *World) loadAsset(fileName string, renderer *sdl.Renderer) *sdl.Texture {
