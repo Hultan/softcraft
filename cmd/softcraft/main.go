@@ -6,7 +6,6 @@ import (
 
 	"softcraft/pkg/common"
 	"softcraft/pkg/components"
-	"softcraft/pkg/enemies"
 	"softcraft/pkg/player"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -37,18 +36,11 @@ func main() {
 	defer renderer.Destroy()
 
 	common.Elements = append(common.Elements, player.NewPlayer(renderer))
-
-	for i := 0; i < 5; i++ {
-		for j := 0; j < 3; j++ {
-			x := (float64(i)/5)*common.ScreenWidth + (common.BasicEnemySize / 2.0)
-			y := float64(j)*common.BasicEnemySize + (common.BasicEnemySize / 2.0)
-
-			common.Elements = append(common.Elements, enemies.NewBasicEnemy(renderer, x, y))
-		}
-	}
+	world := components.NewWorld(renderer)
 
 	components.InitBulletPool(renderer)
 
+	// GAME LOOP
 	for {
 		frameStartTime := time.Now()
 
@@ -70,6 +62,11 @@ func main() {
 			return
 		}
 
+		// Draw world
+		world.OnUpdate()
+		world.OnDraw(renderer)
+
+		// Draw elements
 		for _, elem := range common.Elements {
 			if elem.Active {
 				err = elem.Update()
@@ -93,4 +90,5 @@ func main() {
 
 		common.Delta = time.Since(frameStartTime).Seconds() * common.TargetTicksPerSecond
 	}
+	// END GAME LOOP
 }

@@ -12,18 +12,18 @@ func NewPlayer(renderer *sdl.Renderer) *common.Element {
 
 	player.Position = common.Vector{
 		X: common.ScreenWidth / 2.0,
-		Y: common.ScreenHeight - common.PlayerSize/2.0}
+		Y: common.ScreenHeight /2.0}
 
-	sr := components.NewSpriteRenderer(player, renderer, "assets/sprites/player.bmp")
+	sr := components.NewSpriteRenderer(player, renderer, "assets/player.bmp")
 	player.AddComponent(sr)
-
-	mover := components.NewKeyboardMover(player, 5)
-	player.AddComponent(mover)
 
 	shooter := components.NewKeyboardShooter(player, common.PlayerShotCoolDown)
 	player.AddComponent(shooter)
+	quitter := components.NewKeyboardQuitter(player)
+	player.AddComponent(quitter)
 
 	player.Active = true
+	player.Tag = "player"
 
 	return player
 }

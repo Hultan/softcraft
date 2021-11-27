@@ -47,7 +47,8 @@ func (sr *spriteRenderer) OnDraw(renderer *sdl.Renderer) error {
 		sr.tex,
 		sr.container.Position,
 		sr.container.Rotation,
-		renderer)
+		renderer,
+		true)
 }
 
 func (sr *spriteRenderer) OnCollision(_ *common.Element) error {

@@ -10,16 +10,19 @@ func DrawTexture(
 	tex *sdl.Texture,
 	position Vector,
 	rotation float64,
-	renderer *sdl.Renderer) error {
+	renderer *sdl.Renderer,
+	center bool) error {
 
 	_, _, width, height, err := tex.Query()
 	if err != nil {
 		return fmt.Errorf("querying texture failed: %v", err)
 	}
 
-	// Convert coordinates to the top left of the sprite
-	position.X -= float64(width) / 2.0
-	position.Y -= float64(height) / 2.0
+	if center {
+		// Convert coordinates to the top left of the sprite
+		position.X -= float64(width) / 2.0
+		position.Y -= float64(height) / 2.0
+	}
 
 	return renderer.CopyEx(
 		tex,

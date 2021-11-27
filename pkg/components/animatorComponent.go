@@ -53,7 +53,8 @@ func (an *animator) OnDraw(renderer *sdl.Renderer) error {
 		tex,
 		an.container.Position,
 		an.container.Rotation,
-		renderer)
+		renderer,
+		true)
 }
 
 func (an *animator) OnCollision(_ *common.Element) error {
