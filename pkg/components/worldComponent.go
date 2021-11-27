@@ -71,14 +71,14 @@ func (w *World) OnDraw(renderer *sdl.Renderer) error {
 drawing:
 	for i := 0; i < common.CanvasWidth; i++ {
 		for j := 0; j < common.CanvasHeight; j++ {
-			if xx+i<0 || xx+i>=len(w.data) {
+			if yy+j<0 || yy+j>=len(w.data) {
 				continue
 			}
-			if yy+j<0 || yy+j>=len(w.data[xx+i]) {
+			if xx+i<0 || xx+i>=len(w.data[yy+j]) {
 				continue
 			}
 			err = common.DrawTexture(
-				w.tex[w.data[xx+i][yy+j]],
+				w.tex[w.data[yy+j][xx+i]],
 				common.Vector{
 					X: float64(i*common.BlockWidth) - dx,
 					Y: float64(j*common.BlockHeight) - dy,

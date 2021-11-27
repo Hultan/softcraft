@@ -36,8 +36,8 @@ type Vector struct {
 var Delta float64
 
 const (
-	ScreenWidth  = 640
-	ScreenHeight = 400
+	ScreenWidth  = 900
+	ScreenHeight = 600
 
 	CanvasWidth = 30
 	CanvasHeight = 20
