@@ -1,7 +1,10 @@
 package world
 
 import (
+	"io/ioutil"
 	"math/rand"
+	"strconv"
+	"strings"
 
 	"github.com/aquilax/go-perlin"
 )
@@ -16,12 +19,12 @@ const (
 	AssetWater
 )
 
-type Generator struct {
+type WorldLoader struct {
 
 }
 
 // GenerateRandomWorld generates a random world
-func (w *Generator) GenerateRandomWorld() [1000][1000]Asset{
+func (g *WorldLoader) GenerateRandomWorld() [1000][1000]Asset{
 	const (
 		alpha       = 2.
 		beta        = 2.
@@ -53,4 +56,30 @@ func (w *Generator) GenerateRandomWorld() [1000][1000]Asset{
 	}
 
 	return world
+}
+
+func (g *WorldLoader) LoadWorld() [][]Asset {
+	var w [][]Asset
+
+	data, err := ioutil.ReadFile("assets/softcraft.world")
+	if err != nil {
+		panic(err)
+	}
+	lines := strings.Split(string(data),"\n")
+	for _, line := range lines {
+		if strings.Trim(line, " ") == "" {
+			continue
+		}
+		var row []Asset
+		blocks := strings.Split(line, " ")
+		for _, block := range blocks {
+			item, err := strconv.Atoi(block)
+			if err != nil {
+				panic(err)
+			}
+			row = append(row, Asset(item))
+		}
+		w = append(w,row)
+	}
+	return w
 }

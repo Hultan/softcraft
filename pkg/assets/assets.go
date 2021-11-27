@@ -13,7 +13,6 @@ type AssetLoader struct {
 
 func (l *AssetLoader) LoadWorldAssets(renderer *sdl.Renderer) map[world.Asset]*sdl.Texture {
 	var textures map[world.Asset]*sdl.Texture
-
 	textures = make(map[world.Asset]*sdl.Texture,5)
 
 	textures[world.AssetGrass] =  l.loadAsset("assets/world/grass.bmp", renderer)

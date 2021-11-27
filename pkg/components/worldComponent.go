@@ -13,7 +13,7 @@ type World struct {
 
 	renderer *sdl.Renderer
 	window   *sdl.Window
-	data     [1000][1000]world.Asset
+	data     [][]world.Asset
 	tex      map[world.Asset]*sdl.Texture
 }
 
@@ -21,18 +21,18 @@ func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
 	w := &World{}
 
 	// Position the player in the center of the world.
-	w.Element.Position = common.Vector{X: 500 * 32, Y: 500 * 32}
+	w.Element.Position = common.Vector{X: 45 * 32, Y: 30 * 32}
 	w.Element.Tag = "world"
 	w.renderer = renderer
 	w.window = window
 
-	gen := world.Generator{}
-	w.data = gen.GenerateRandomWorld()
+	gen := world.WorldLoader{}
+	w.data = gen.LoadWorld()
 
 	a := assets.AssetLoader{}
 	w.tex = a.LoadWorldAssets(renderer)
 
-	mover := NewKeyboardMover(&w.Element, 5, w)
+	mover := NewKeyboardMover(&w.Element, 0.1, w)
 	w.AddComponent(mover)
 
 	loc, err := NewLocationComponent(w)
@@ -69,8 +69,14 @@ func (w *World) OnDraw(renderer *sdl.Renderer) error {
 	dy := y - float64(yy)*common.BlockHeight
 
 drawing:
-	for i := -1; i < common.CanvasWidth+1; i++ {
-		for j := -1; j < common.CanvasHeight+1; j++ {
+	for i := 0; i < common.CanvasWidth; i++ {
+		for j := 0; j < common.CanvasHeight; j++ {
+			if xx+i<0 || xx+i>=len(w.data) {
+				continue
+			}
+			if yy+j<0 || yy+j>=len(w.data[xx+i]) {
+				continue
+			}
 			err = common.DrawTexture(
 				w.tex[w.data[xx+i][yy+j]],
 				common.Vector{

@@ -20,6 +20,7 @@ func NewSpriteRenderer(container *common.Element, renderer *sdl.Renderer, filena
 
 	sr.tex, err = common.LoadTextureFromBMP(filename, renderer)
 	if err != nil {
+		// Can't continue if we can't load the assets
 		panic(err)
 	}
 
