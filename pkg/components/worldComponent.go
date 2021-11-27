@@ -127,8 +127,10 @@ func (w *World) generateRandomWorld() {
 				data = 1
 			case r <= 0.5:
 				data = 2
-			case r <= 1:
+			case r <= 0.6:
 				data = 3
+			case r <= 1:
+				data = 4
 			}
 			w.data[i][j] = data
 		}
@@ -140,7 +142,8 @@ func (w *World) loadAssets(renderer *sdl.Renderer) {
 	w.tex[0] = w.loadAsset("assets/world/grass.bmp", renderer)
 	w.tex[1] = w.loadAsset("assets/world/ground.bmp", renderer)
 	w.tex[2] = w.loadAsset("assets/world/path.bmp", renderer)
-	w.tex[3] = w.loadAsset("assets/world/water.bmp", renderer)
+	w.tex[3] = w.loadAsset("assets/world/sand.bmp", renderer)
+	w.tex[4] = w.loadAsset("assets/world/water.bmp", renderer)
 }
 
 func (w *World) loadAsset(fileName string, renderer *sdl.Renderer) *sdl.Texture {

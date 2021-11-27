@@ -63,7 +63,7 @@ func (mover *keyboardMover) canMove(dx, dy float64) bool {
 	x := int64((mover.world.Position.X + dx*mover.movingSpeed) / common.BlockWidth)
 	y := int64((mover.world.Position.Y + dy*mover.movingSpeed) / common.BlockHeight)
 	fmt.Println(x,y)
-	if mover.world.data[x][y] == 3 {
+	if mover.world.data[x][y] == 4 {
 		return false
 	}
 	return true
