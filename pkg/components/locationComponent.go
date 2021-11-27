@@ -58,10 +58,10 @@ func (lc *locationComponent) OnDraw(renderer *sdl.Renderer) error {
 	}
 	defer texture.Destroy()
 
-	renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: surface.W, H: surface.H})
+	renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: surface.W+10, H: surface.H})
 	renderer.Copy(texture,
 		&sdl.Rect{X: 0, Y: 0, W: surface.W, H: surface.H},
-		&sdl.Rect{X: 0, Y: 0, W: surface.W, H: surface.H})
+		&sdl.Rect{X: 5, Y: 0, W: surface.W, H: surface.H})
 
 	renderer.Present()
 
