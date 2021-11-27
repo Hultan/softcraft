@@ -32,33 +32,38 @@ func NewLocationComponent(world *World) (*locationComponent, error) {
 		return nil, err
 	}
 	// Load the font for our text
-	if lc.font, err = ttf.OpenFont("assets/nerdfont.ttf", 15); err != nil {
+	if lc.font, err = ttf.OpenFont("assets/nerdfont.ttf", 20); err != nil {
 		return nil, err
 	}
 
 	return lc, nil
 }
 
-func (lc *locationComponent) OnDraw(_ *sdl.Renderer) error {
+func (lc *locationComponent) OnDraw(renderer *sdl.Renderer) error {
 	var err error
-	var text *sdl.Surface
+	var surface *sdl.Surface
 
 	x:= int64(lc.world.Position.X/common.BlockWidth)
 	y:= int64(lc.world.Position.Y/common.BlockHeight)
 	// Create a white text with the font
 	message := fmt.Sprintf("Pos : %d,%d", x,y)
-	if text, err = lc.font.RenderUTF8Blended(message, sdl.Color{R: 255, G: 255, B: 255, A: 255}); err != nil {
+	if surface, err = lc.font.RenderUTF8Solid(message, sdl.Color{R: 0, G: 0, B: 0, A: 255}); err != nil {
 		return err
 	}
-	defer text.Free()
+	defer surface.Free()
 
-	// Draw the text around the center of the window
-	if err = text.Blit(nil, lc.surface, &sdl.Rect{X: 10, Y: 10, W: 0, H: 0}); err != nil {
-		return err
+	texture, err := renderer.CreateTextureFromSurface(surface)
+	if err != nil {
+		panic(err)
 	}
+	defer texture.Destroy()
 
-	// Update the window surface with what we have drawn
-	lc.window.UpdateSurfaceRects([]sdl.Rect{sdl.Rect{X: 10, Y: 10, W: text.W, H: text.H}})
+	renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: surface.W, H: surface.H})
+	renderer.Copy(texture,
+		&sdl.Rect{X: 0, Y: 0, W: surface.W, H: surface.H},
+		&sdl.Rect{X: 0, Y: 0, W: surface.W, H: surface.H})
+
+	renderer.Present()
 
 	return nil
 }
