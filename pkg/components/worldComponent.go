@@ -11,8 +11,8 @@ import (
 type World struct {
 	*common.Element
 
-	data     [][]assetManager.AssetMap
-	assets      *assetManager.AssetManager
+	data   [][]assetManager.AssetMap
+	assets *assetManager.AssetManager
 }
 
 // NewWorld creates a new world
@@ -21,9 +21,9 @@ func NewWorld(am *assetManager.AssetManager) (*World, error) {
 
 	// Position the player in the center of the world.
 	w.Element = &common.Element{
-		Position : common.Vector{X: 45 * 32, Y: 30 * 32},
-		Tag : "world",
-		Active : true,
+		Position: common.Vector{X: 45 * 32, Y: 30 * 32},
+		Tag:      "world",
+		Active:   true,
 	}
 
 	gen := world.Loader{}
@@ -59,29 +59,29 @@ func (w *World) OnDraw(renderer *sdl.Renderer) error {
 	var err error
 
 	// Upper left corner coordinates
-	x := w.Element.Position.X - common.ScreenWidth/2
-	y := w.Element.Position.Y - common.ScreenHeight/2
+	startX := w.Element.Position.X - common.ScreenWidth/2
+	startY := w.Element.Position.Y - common.ScreenHeight/2
 	// Upper left corner in block coordinates
-	xx := int(x / common.BlockWidth)
-	yy := int(y / common.BlockHeight)
+	xx := int(startX / common.BlockWidth)
+	yy := int(startY / common.BlockHeight)
 	// Position inside block
-	dx := x - float64(xx)*common.BlockWidth
-	dy := y - float64(yy)*common.BlockHeight
+	dx := startX - float64(xx)*common.BlockWidth
+	dy := startY - float64(yy)*common.BlockHeight
 
 drawing:
-	for i := 0; i < common.CanvasWidth; i++ {
-		for j := 0; j < common.CanvasHeight; j++ {
-			if yy+j<0 || yy+j>=len(w.data) {
+	for y := 0; y < common.CanvasHeight; y++ {
+		for x := 0; x < common.CanvasWidth; x++ {
+			if yy+y < 0 || yy+y >= len(w.data) {
 				continue
 			}
-			if xx+i<0 || xx+i>=len(w.data[yy+j]) {
+			if xx+x < 0 || xx+x >= len(w.data[yy+y]) {
 				continue
 			}
 			err = common.DrawTexture(
-				w.assets.GetWorldAsset(w.data[yy+j][xx+i]),
+				w.assets.GetWorldAsset(w.data[yy+y][xx+x]),
 				common.Vector{
-					X: float64(i*common.BlockWidth) - dx,
-					Y: float64(j*common.BlockHeight) - dy,
+					X: float64(x*common.BlockWidth) - dx,
+					Y: float64(y*common.BlockHeight) - dy,
 				},
 				0.0,
 				renderer,
@@ -108,4 +108,3 @@ drawing:
 func (w *World) OnCollision(_ *common.Element) error {
 	return nil
 }
-
