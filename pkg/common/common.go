@@ -8,10 +8,10 @@ const (
 	ScreenWidth  = 900
 	ScreenHeight = 600
 
-	CanvasWidth = 30
+	CanvasWidth  = 30
 	CanvasHeight = 20
 
-	BlockWidth = 32
+	BlockWidth  = 32
 	BlockHeight = 32
 
 	TargetTicksPerSecond = 60
@@ -27,12 +27,12 @@ type Component interface {
 }
 
 type Element struct {
-	Position   Vector
-	Rotation   float64
-	Active     bool
-	Tag        string
-	Collisions []Circle
-	Components []Component
+	Position     Vector
+	Rotation     float64
+	Active       bool
+	Tag          string
+	Collisions   []Circle
+	Components   []Component
 }
 
 type Circle struct {

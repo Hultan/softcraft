@@ -9,7 +9,7 @@ import (
 )
 
 type World struct {
-	common.Element
+	*common.Element
 
 	data     [][]assetManager.AssetMap
 	assets      *assetManager.AssetManager
@@ -20,14 +20,17 @@ func NewWorld(am *assetManager.AssetManager) (*World, error) {
 	w := &World{}
 
 	// Position the player in the center of the world.
-	w.Element.Position = common.Vector{X: 45 * 32, Y: 30 * 32}
-	w.Element.Tag = "world"
+	w.Element = &common.Element{
+		Position : common.Vector{X: 45 * 32, Y: 30 * 32},
+		Tag : "world",
+		Active : true,
+	}
 
 	gen := world.Loader{}
 	w.data = gen.LoadWorld()
 	w.assets = am
 
-	mover := NewKeyboardMover(&w.Element, 0.1, w)
+	mover := NewKeyboardMover(w.Element, 0.5, w)
 	w.AddComponent(mover)
 
 	loc, err := NewLocationComponent(w)
