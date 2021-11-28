@@ -61,8 +61,8 @@ func (mover *keyboardMover) OnCollision(_ *common.Element) error {
 func (mover *keyboardMover) canMove(dx, dy float64) bool {
 	x := int64((mover.world.Position.X + dx*mover.movingSpeed) / common.BlockWidth)
 	y := int64((mover.world.Position.Y + dy*mover.movingSpeed) / common.BlockHeight)
-	if mover.world.data[y][x] == assetManager.AssetNumericWater ||
-		mover.world.data[y][x] == assetManager.AssetNumericGround {
+	if mover.world.data[y][x] == assetManager.AssetMapWater ||
+		mover.world.data[y][x] == assetManager.AssetMapGround {
 		return false
 	}
 	return true

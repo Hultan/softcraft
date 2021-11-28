@@ -14,15 +14,9 @@ type spriteRenderer struct {
 	width, height int
 }
 
-func NewSpriteRenderer(container *common.Element, renderer *sdl.Renderer, filename string) *spriteRenderer {
+func NewSpriteRenderer(container *common.Element, tex *sdl.Texture) *spriteRenderer {
 	sr := &spriteRenderer{}
-	var err error
-
-	sr.tex, err = common.LoadTextureFromBMP(filename, renderer)
-	if err != nil {
-		// Can't continue if we can't load the assets
-		panic(err)
-	}
+	sr.tex=tex
 
 	_, _, width, height, err := sr.tex.Query()
 	if err != nil {

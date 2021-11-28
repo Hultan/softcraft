@@ -3,11 +3,12 @@ package assetManager
 type AssetString string
 
 const (
-	AssetStringGrass  AssetString = "world.grass"
-	AssetStringGround AssetString = "world.ground"
-	AssetStringPath   AssetString = "world.path"
-	AssetStringSand   AssetString = "world.sand"
-	AssetStringWater  AssetString = "world.water"
+	AssetStringWorldGrass  AssetString = "world.grass"
+	AssetStringWorldGround AssetString = "world.ground"
+	AssetStringWorldPath   AssetString = "world.path"
+	AssetStringWorldSand   AssetString = "world.sand"
+	AssetStringWorldWater  AssetString = "world.water"
+	AssetStringPlayer      AssetString = "player"
 )
 
 const (
@@ -16,14 +17,15 @@ const (
 	AssetPathWorldPath   = "assets/world/path.bmp"
 	AssetPathWorldSand   = "assets/world/sand.bmp"
 	AssetPathWorldWater  = "assets/world/water.bmp"
+	AssetPathPlayer      = "assets/player.bmp"
 )
 
-type AssetNumeric int
+type AssetMap int
 
 const (
-	AssetNumericGrass AssetNumeric = iota
-	AssetNumericGround
-	AssetNumericPath
-	AssetNumericSand
-	AssetNumericWater
+	AssetMapGrass AssetMap = iota
+	AssetMapGround
+	AssetMapPath
+	AssetMapSand
+	AssetMapWater
 )

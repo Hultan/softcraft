@@ -11,21 +11,17 @@ import (
 type World struct {
 	common.Element
 
-	renderer *sdl.Renderer
-	window   *sdl.Window
-	data     [][]assetManager.AssetNumeric
+	data     [][]assetManager.AssetMap
 	assets      *assetManager.AssetManager
 }
 
 // NewWorld creates a new world
-func NewWorld(renderer *sdl.Renderer, window *sdl.Window, am *assetManager.AssetManager) (*World, error) {
+func NewWorld(am *assetManager.AssetManager) (*World, error) {
 	w := &World{}
 
 	// Position the player in the center of the world.
 	w.Element.Position = common.Vector{X: 45 * 32, Y: 30 * 32}
 	w.Element.Tag = "world"
-	w.renderer = renderer
-	w.window = window
 
 	gen := world.Loader{}
 	w.data = gen.LoadWorld()

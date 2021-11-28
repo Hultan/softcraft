@@ -48,8 +48,8 @@ func main() {
 	assets.Load(renderer)
 
 	// Create player and the world
-	common.Elements = append(common.Elements, player.NewPlayer(renderer))
-	world, err := components.NewWorld(renderer, window, assets)
+	common.Elements = append(common.Elements, player.NewPlayer(assets))
+	world, err := components.NewWorld(assets)
 	if err != nil {
 		panic(err)
 	}
