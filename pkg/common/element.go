@@ -7,6 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
+// Draw draws all the components of the element
 func (elem *Element) Draw(renderer *sdl.Renderer) error {
 	for _, comp := range elem.Components {
 		err := comp.OnDraw(renderer)
@@ -18,6 +19,7 @@ func (elem *Element) Draw(renderer *sdl.Renderer) error {
 	return nil
 }
 
+// Update updates all the components of the element
 func (elem *Element) Update() error {
 	for _, comp := range elem.Components {
 		err := comp.OnUpdate()
@@ -29,6 +31,7 @@ func (elem *Element) Update() error {
 	return nil
 }
 
+// Collision checks all the components of the element for collisions
 func (elem *Element) Collision(other *Element) error {
 	for _, comp := range elem.Components {
 		err := comp.OnCollision(other)
@@ -40,6 +43,7 @@ func (elem *Element) Collision(other *Element) error {
 	return nil
 }
 
+// AddComponent adds a component to the element
 func (elem *Element) AddComponent(new Component) {
 	for _, existing := range elem.Components {
 		if reflect.TypeOf(new) == reflect.TypeOf(existing) {
@@ -51,6 +55,7 @@ func (elem *Element) AddComponent(new Component) {
 	elem.Components = append(elem.Components, new)
 }
 
+// GetComponent gets a component of the specific type from the element
 func (elem *Element) GetComponent(withType Component) Component {
 	typ := reflect.TypeOf(withType)
 	for _, comp := range elem.Components {

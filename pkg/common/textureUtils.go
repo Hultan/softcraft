@@ -6,6 +6,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
+// DrawTexture draws a texture
 func DrawTexture(
 	tex *sdl.Texture,
 	position Vector,
@@ -33,6 +34,7 @@ func DrawTexture(
 		sdl.FLIP_NONE)
 }
 
+// LoadTextureFromBMP loads a texture from a BMP file
 func LoadTextureFromBMP(filename string, renderer *sdl.Renderer) (*sdl.Texture, error) {
 	img, err := sdl.LoadBMP(filename)
 	if err != nil {

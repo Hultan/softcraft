@@ -1,10 +1,24 @@
 package common
 
 import (
-	"time"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
+
+const (
+	ScreenWidth  = 900
+	ScreenHeight = 600
+
+	CanvasWidth = 30
+	CanvasHeight = 20
+
+	BlockWidth = 32
+	BlockHeight = 32
+
+	TargetTicksPerSecond = 60
+
+	BulletSpeed = 10
+)
+
 
 type Component interface {
 	OnUpdate() error
@@ -21,8 +35,6 @@ type Element struct {
 	Components []Component
 }
 
-var Elements []*Element
-
 type Circle struct {
 	Center Vector
 	Radius float64
@@ -33,28 +45,5 @@ type Vector struct {
 	Y float64
 }
 
+var Elements []*Element
 var Delta float64
-
-const (
-	ScreenWidth  = 900
-	ScreenHeight = 600
-
-	CanvasWidth = 30
-	CanvasHeight = 20
-
-	BlockWidth = 32
-	BlockHeight = 32
-
-	TargetTicksPerSecond = 60
-)
-
-const (
-	PlayerSize = 105
-
-	PlayerShotCoolDown = time.Millisecond * 250
-)
-
-const (
-	BulletSize  = 32
-	BulletSpeed = 10
-)

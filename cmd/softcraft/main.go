@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"softcraft/pkg/assetManager"
 	"softcraft/pkg/common"
 	"softcraft/pkg/components"
 	"softcraft/pkg/player"
@@ -12,11 +13,13 @@ import (
 )
 
 func main() {
+	// Initialize SDL
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
 		fmt.Println("initializing SDL failed:", err)
 		return
 	}
 
+	// Create the window
 	window, err := sdl.CreateWindow(
 		"Gaming in Go",
 		sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
@@ -26,27 +29,36 @@ func main() {
 		fmt.Println("initializing window failed:", err)
 		return
 	}
-	defer window.Destroy()
+	defer func(window *sdl.Window) {
+		_ = window.Destroy()
+	}(window)
 
+	// Create the renderer
 	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if err != nil {
 		fmt.Println("initializing renderer failed:", err)
 		return
 	}
-	defer renderer.Destroy()
+	defer func(renderer *sdl.Renderer) {
+		_ = renderer.Destroy()
+	}(renderer)
 
+	// Load assets
+	assets :=assetManager.New()
+	assets.Load(renderer)
+
+	// Create player and the world
 	common.Elements = append(common.Elements, player.NewPlayer(renderer))
-	world, err := components.NewWorld(renderer, window)
+	world, err := components.NewWorld(renderer, window, assets)
 	if err != nil {
 		panic(err)
 	}
-
-	// components.InitBulletPool(renderer)
 
 	// GAME LOOP
 	for {
 		frameStartTime := time.Now()
 
+		// Handle application quitting
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch event.(type) {
 			case *sdl.QuitEvent:
@@ -54,6 +66,7 @@ func main() {
 			}
 		}
 
+		// Set background color and clear screen
 		err = renderer.SetDrawColor(255, 255, 255, 255)
 		if err != nil {
 			fmt.Println("setting draw color failed:", err)
@@ -65,11 +78,19 @@ func main() {
 			return
 		}
 
-		// Draw world
-		world.OnUpdate()
-		world.OnDraw(renderer)
+		// Update and draw world
+		err = world.OnUpdate()
+		if err != nil {
+			fmt.Println("updating world failed:", err)
+			return
+		}
+		err = world.OnDraw(renderer)
+		if err != nil {
+			fmt.Println("drawing failed:", err)
+			return
+		}
 
-		// Draw elements
+		// Update and draw elements
 		for _, elem := range common.Elements {
 			if elem.Active {
 				err = elem.Update()
@@ -84,7 +105,8 @@ func main() {
 			}
 		}
 
-		if err := common.CheckCollisions(); err != nil {
+		// Handle collisions
+		if err = common.CheckCollisions(); err != nil {
 			fmt.Println("checking collisions failed:", err)
 			return
 		}

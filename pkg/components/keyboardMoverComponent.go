@@ -1,8 +1,8 @@
 package components
 
 import (
+	"softcraft/pkg/assetManager"
 	"softcraft/pkg/common"
-	"softcraft/pkg/world"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -61,7 +61,8 @@ func (mover *keyboardMover) OnCollision(_ *common.Element) error {
 func (mover *keyboardMover) canMove(dx, dy float64) bool {
 	x := int64((mover.world.Position.X + dx*mover.movingSpeed) / common.BlockWidth)
 	y := int64((mover.world.Position.Y + dy*mover.movingSpeed) / common.BlockHeight)
-	if mover.world.data[y][x] == world.AssetWater || mover.world.data[y][x] == world.AssetGround {
+	if mover.world.data[y][x] == assetManager.AssetNumericWater ||
+		mover.world.data[y][x] == assetManager.AssetNumericGround {
 		return false
 	}
 	return true

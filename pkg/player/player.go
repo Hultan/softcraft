@@ -7,6 +7,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
+// NewPlayer returns a new player
 func NewPlayer(renderer *sdl.Renderer) *common.Element {
 	player := &common.Element{}
 
@@ -17,8 +18,10 @@ func NewPlayer(renderer *sdl.Renderer) *common.Element {
 	sr := components.NewSpriteRenderer(player, renderer, "assets/player.bmp")
 	player.AddComponent(sr)
 
-	shooter := components.NewKeyboardShooter(player, common.PlayerShotCoolDown)
-	player.AddComponent(shooter)
+	// Shooting not implemented yet
+	// shooter := components.NewKeyboardShooter(player, common.PlayerShotCoolDown)
+	// player.AddComponent(shooter)
+
 	quitter := components.NewKeyboardQuitter(player)
 	player.AddComponent(quitter)
 

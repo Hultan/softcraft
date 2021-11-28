@@ -1,7 +1,7 @@
 package components
 
 import (
-	"softcraft/pkg/assets"
+	"softcraft/pkg/assetManager"
 	"softcraft/pkg/common"
 	"softcraft/pkg/world"
 
@@ -13,11 +13,12 @@ type World struct {
 
 	renderer *sdl.Renderer
 	window   *sdl.Window
-	data     [][]world.Asset
-	tex      map[world.Asset]*sdl.Texture
+	data     [][]assetManager.AssetNumeric
+	assets      *assetManager.AssetManager
 }
 
-func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
+// NewWorld creates a new world
+func NewWorld(renderer *sdl.Renderer, window *sdl.Window, am *assetManager.AssetManager) (*World, error) {
 	w := &World{}
 
 	// Position the player in the center of the world.
@@ -26,11 +27,9 @@ func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
 	w.renderer = renderer
 	w.window = window
 
-	gen := world.WorldLoader{}
+	gen := world.Loader{}
 	w.data = gen.LoadWorld()
-
-	a := assets.AssetLoader{}
-	w.tex = a.LoadWorldAssets(renderer)
+	w.assets = am
 
 	mover := NewKeyboardMover(&w.Element, 0.1, w)
 	w.AddComponent(mover)
@@ -44,6 +43,7 @@ func NewWorld(renderer *sdl.Renderer, window *sdl.Window) (*World, error) {
 	return w, nil
 }
 
+// OnUpdate updates the world
 func (w *World) OnUpdate() error {
 	for _, comp := range w.Components {
 		err := comp.OnUpdate()
@@ -55,6 +55,7 @@ func (w *World) OnUpdate() error {
 	return nil
 }
 
+// OnDraw draws the world
 func (w *World) OnDraw(renderer *sdl.Renderer) error {
 	var err error
 
@@ -78,7 +79,7 @@ drawing:
 				continue
 			}
 			err = common.DrawTexture(
-				w.tex[w.data[yy+j][xx+i]],
+				w.assets.GetWorldAsset(w.data[yy+j][xx+i]),
 				common.Vector{
 					X: float64(i*common.BlockWidth) - dx,
 					Y: float64(j*common.BlockHeight) - dy,
@@ -104,6 +105,7 @@ drawing:
 	return err
 }
 
+// OnCollision handles collisions
 func (w *World) OnCollision(_ *common.Element) error {
 	return nil
 }

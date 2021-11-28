@@ -4,13 +4,7 @@ import (
 	"math"
 )
 
-func collides(c1, c2 Circle) bool {
-	dist := math.Sqrt(math.Pow(c2.Center.X-c1.Center.X, 2) +
-		math.Pow(c2.Center.Y-c1.Center.Y, 2))
-
-	return dist <= c1.Radius+c2.Radius
-}
-
+// CheckCollisions checks if there are any collisions
 func CheckCollisions() error {
 	for i := 0; i < len(Elements)-1; i++ {
 		for j := i + 1; j < len(Elements); j++ {
@@ -32,4 +26,11 @@ func CheckCollisions() error {
 	}
 
 	return nil
+}
+
+func collides(c1, c2 Circle) bool {
+	dist := math.Sqrt(math.Pow(c2.Center.X-c1.Center.X, 2) +
+		math.Pow(c2.Center.Y-c1.Center.Y, 2))
+
+	return dist <= c1.Radius+c2.Radius
 }

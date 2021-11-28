@@ -9,6 +9,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
+// NewBasicEnemy returns a new Enemy (not implemented yet)
 func NewBasicEnemy(renderer *sdl.Renderer, x, y float64) *common.Element {
 	basicEnemy := &common.Element{}
 
