@@ -38,7 +38,7 @@ func (lc *locationComponent) OnDraw(renderer *sdl.Renderer) error {
 
 	// Draw a black position information
 	message := fmt.Sprintf("Pos : %d,%d", x, y)
-	surface, err := lc.font.RenderUTF8Solid(message, sdl.Color{R: 0, G: 0, B: 0, A: 255})
+	surface, err := lc.font.RenderUTF8Blended(message, sdl.Color{R: 0, G: 0, B: 0, A: 255})
 	if err != nil {
 		return err
 	}
