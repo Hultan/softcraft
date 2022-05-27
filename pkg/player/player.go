@@ -12,7 +12,8 @@ func NewPlayer(am *assetManager.AssetManager) *common.Element {
 
 	player.Position = common.Vector{
 		X: common.ScreenWidth / 2.0,
-		Y: common.ScreenHeight /2.0}
+		Y: common.ScreenHeight / 2.0,
+	}
 
 	player.Active = true
 	player.Tag = "player"

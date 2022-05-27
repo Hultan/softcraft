@@ -5,7 +5,7 @@ import (
 
 	"softcraft/pkg/common"
 
-"github.com/veandco/go-sdl2/sdl"
+	"github.com/veandco/go-sdl2/sdl"
 )
 
 type keyboardQuitter struct {
@@ -18,11 +18,11 @@ func NewKeyboardQuitter(container *common.Element) *keyboardQuitter {
 	}
 }
 
-func (mover *keyboardQuitter) OnDraw(_ *sdl.Renderer) error {
+func (q *keyboardQuitter) OnDraw(_ *sdl.Renderer) error {
 	return nil
 }
 
-func (mover *keyboardQuitter) OnUpdate() error {
+func (q *keyboardQuitter) OnUpdate() error {
 	keys := sdl.GetKeyboardState()
 
 	if keys[sdl.SCANCODE_ESCAPE] == 1 || keys[sdl.SCANCODE_Q] == 1 {
@@ -32,7 +32,6 @@ func (mover *keyboardQuitter) OnUpdate() error {
 	return nil
 }
 
-func (mover *keyboardQuitter) OnCollision(_ *common.Element) error {
+func (q *keyboardQuitter) OnCollision(_ *common.Element) error {
 	return nil
 }
-

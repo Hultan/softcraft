@@ -29,9 +29,9 @@ func main() {
 		fmt.Println("initializing window failed:", err)
 		return
 	}
-	defer func(window *sdl.Window) {
+	defer func() {
 		_ = window.Destroy()
-	}(window)
+	}()
 
 	// Create the renderer
 	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
@@ -39,12 +39,12 @@ func main() {
 		fmt.Println("initializing renderer failed:", err)
 		return
 	}
-	defer func(renderer *sdl.Renderer) {
+	defer func() {
 		_ = renderer.Destroy()
-	}(renderer)
+	}()
 
 	// Load assets
-	assets :=assetManager.New()
+	assets := assetManager.New()
 	assets.Load(renderer)
 
 	// Create player and the world

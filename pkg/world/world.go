@@ -8,7 +8,7 @@ import (
 	"softcraft/pkg/assetManager"
 )
 
-type Loader struct {}
+type Loader struct{}
 
 var assetLoadingErr error
 
@@ -20,21 +20,22 @@ func (l *Loader) LoadWorld() [][]assetManager.AssetMap {
 	if err != nil {
 		panic(err)
 	}
-	lines := strings.Split(string(data),"\n")
+	lines := strings.Split(string(data), "\n")
+	var item int
 	for _, line := range lines {
 		if strings.Trim(line, " ") == "" {
 			continue
 		}
 		var row []assetManager.AssetMap
-		blocks := strings.Split(line, " ")
+		blocks := strings.Fields(line)
 		for _, block := range blocks {
-			item, err := strconv.Atoi(block)
+			item, err = strconv.Atoi(block)
 			if err != nil {
 				panic(err)
 			}
 			row = append(row, assetManager.AssetMap(item))
 		}
-		w = append(w,row)
+		w = append(w, row)
 	}
 	return w
 }

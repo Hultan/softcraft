@@ -30,7 +30,7 @@ func NewWorld(am *assetManager.AssetManager) (*World, error) {
 	w.data = gen.LoadWorld()
 	w.assets = am
 
-	mover := NewKeyboardMover(w.Element, 0.5, w)
+	mover := NewKeyboardMover(w.Element, 0.05, w)
 	w.AddComponent(mover)
 
 	loc, err := NewLocationComponent(w)

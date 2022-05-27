@@ -16,53 +16,53 @@ type keyboardMover struct {
 
 func NewKeyboardMover(container *common.Element, speed float64, world *World) *keyboardMover {
 	return &keyboardMover{
-		container:   container,
-		speed:       speed,
-		world:       world,
+		container: container,
+		speed:     speed,
+		world:     world,
 	}
 }
 
-func (mover *keyboardMover) OnDraw(_ *sdl.Renderer) error {
+func (m *keyboardMover) OnDraw(_ *sdl.Renderer) error {
 	return nil
 }
 
-func (mover *keyboardMover) OnUpdate() error {
+func (m *keyboardMover) OnUpdate() error {
 	keys := sdl.GetKeyboardState()
 
-	if mover.movingSpeed == 0 {
-		mover.movingSpeed = mover.speed * common.Delta
+	if m.movingSpeed == 0 {
+		m.movingSpeed = m.speed * common.Delta
 	}
 
 	if keys[sdl.SCANCODE_LEFT] == 1 {
-		if mover.canMove(-1, 0) {
-			mover.world.Position.X -= mover.movingSpeed
+		if m.canMove(-1, 0) {
+			m.world.Position.X -= m.movingSpeed
 		}
 	} else if keys[sdl.SCANCODE_RIGHT] == 1 {
-		if mover.canMove(1, 0) {
-			mover.world.Position.X += mover.movingSpeed
+		if m.canMove(1, 0) {
+			m.world.Position.X += m.movingSpeed
 		}
 	} else if keys[sdl.SCANCODE_UP] == 1 {
-		if mover.canMove(0, -1) {
-			mover.world.Position.Y -= mover.movingSpeed
+		if m.canMove(0, -1) {
+			m.world.Position.Y -= m.movingSpeed
 		}
 	} else if keys[sdl.SCANCODE_DOWN] == 1 {
-		if mover.canMove(0, 1) {
-			mover.world.Position.Y += mover.movingSpeed
+		if m.canMove(0, 1) {
+			m.world.Position.Y += m.movingSpeed
 		}
 	}
 
 	return nil
 }
 
-func (mover *keyboardMover) OnCollision(_ *common.Element) error {
+func (m *keyboardMover) OnCollision(_ *common.Element) error {
 	return nil
 }
 
-func (mover *keyboardMover) canMove(dx, dy float64) bool {
-	x := int64((mover.world.Position.X + dx*mover.movingSpeed) / common.BlockWidth)
-	y := int64((mover.world.Position.Y + dy*mover.movingSpeed) / common.BlockHeight)
-	if mover.world.data[y][x] == assetManager.AssetMapWater ||
-		mover.world.data[y][x] == assetManager.AssetMapGround {
+func (m *keyboardMover) canMove(dx, dy float64) bool {
+	x := int64((m.world.Position.X + dx*m.movingSpeed) / common.BlockWidth)
+	y := int64((m.world.Position.Y + dy*m.movingSpeed) / common.BlockHeight)
+	if m.world.data[y][x] == assetManager.AssetMapWater ||
+		m.world.data[y][x] == assetManager.AssetMapGround {
 		return false
 	}
 	return true
