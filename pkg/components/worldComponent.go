@@ -30,7 +30,7 @@ func NewWorld(am *assetManager.AssetManager) (*World, error) {
 	w.data = gen.LoadWorld()
 	w.assets = am
 
-	mover := NewKeyboardMover(w.Element, 0.05, w)
+	mover := NewKeyboardMover(w.Element, 0.35, w)
 	w.AddComponent(mover)
 
 	loc, err := NewLocationComponent(w)
@@ -85,7 +85,8 @@ drawing:
 				},
 				0.0,
 				renderer,
-				false)
+				false,
+			)
 
 			if err != nil {
 				break drawing
