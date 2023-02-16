@@ -1,8 +1,5 @@
 module softcraft
 
-go 1.17
+go 1.19
 
-require (
-	github.com/aquilax/go-perlin v1.1.0 // indirect
-	github.com/veandco/go-sdl2 v0.4.10
-)
+require github.com/veandco/go-sdl2 v0.4.33
